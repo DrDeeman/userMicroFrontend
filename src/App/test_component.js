@@ -1,6 +1,30 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
+import user from '../assets/images/user.png';
+import DialogHome from './dialogHome';
 
 export default function Users(props){
+     
+  const [openDialog, setOpenDialog] = useState(false);
+  const [auth, setAuth] = useState(null);  
 
-    return <div>Hello_user</div>
+
+  useEffect(()=>{
+    console.log('test');
+     fetch('/users_api/auth')
+     .then(async r=>{
+         if(r.ok){
+            var user = await r.json();
+            setAuth(user);
+         }
+     })
+},[]);
+
+    return <div 
+    onClick={()=>setOpenDialog(true)}
+    className='preDialog'
+    style={{backgroundImage:`url(${user})`}}
+    title={(auth?`login=${auth.login}  password=${auth.password}`:null)}
+    >
+    {openDialog?<DialogHome auth={auth} setDataAuth={setAuth}/>:null} 
+    </div>
 }
