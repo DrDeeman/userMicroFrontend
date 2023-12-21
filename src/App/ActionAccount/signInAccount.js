@@ -21,10 +21,13 @@ import {
         fetch('/users_api/login',{
             method:"POST",
             headers:{
-                "Content-type":"application/x-www-form-urlencoded",
+                "Content-type":"application/json",
                 "Accept":"application/json"
             },
-            body:`login=${loginRef.current.value}&password=${passwordRef.current.value}`
+            body:JSON.stringify({
+                login:loginRef.current.value,
+                password:passwordRef.current.value
+            })
             })
             .then(async r=>{
                 var result = await r.json();

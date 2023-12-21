@@ -12,7 +12,7 @@ export default function({auth, setDataAuth}){
     const [signInAccount, setSignInAccount] = useState(false);
 
     function logoutAccount(){
-        fetch('users_api/logout')
+        fetch('/users_api/logout')
         .then(r=>{
             if(r.ok)setDataAuth(null);
         })
