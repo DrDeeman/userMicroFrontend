@@ -1,0 +1,47 @@
+
+const {fetch:originalFetch} = window;
+
+function WrapperFetch(){
+    return async function CustomFetch(...params){
+  
+        let [resource, oldConfig = {}, setToken = true] = params;
+        var accessToken = localStorage.getItem("accessToken");
+        var refreshToken = localStorage.getItem("refreshToken");
+        
+        var newConfig = {...oldConfig};
+
+    if(setToken && accessToken){
+        newConfig.headers = {
+            ...resource.headers,
+            Authorization:"Bearer "+accessToken
+        };
+    }
+
+
+        var response = await originalFetch(resource,newConfig);
+        var tresponse = response.clone();
+    
+        if(tresponse.status == 400 && (await tresponse.text())=='Jwt token expired' && refreshToken){
+             
+               var responseRefresh = await originalFetch("/users_api/refresh_token",{
+                method:"GET",
+                headers:{Authorization:"Bearer "+refreshToken}
+               });
+
+               localStorage.removeItem("accessToken");
+               localStorage.removeItem("refreshToken");
+
+               if(responseRefresh.ok){
+                    var body = await responseRefresh.json();
+                    localStorage.setItem("accessToken",body.accessToken);
+                    localStorage.setItem("refreshToken",body.refreshToken);
+                    return CustomFetch(resource,oldConfig);
+               }
+
+        }
+    
+        return new Promise(r=>r(response));
+    }
+}
+
+window.fetch = WrapperFetch();

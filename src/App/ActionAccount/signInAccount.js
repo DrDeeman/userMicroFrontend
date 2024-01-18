@@ -28,12 +28,14 @@ import {
                 login:loginRef.current.value,
                 password:passwordRef.current.value
             })
-            })
+            },false)
             .then(async r=>{
                 var result = await r.json();
                 if(r.ok){
                     props.closePopup();
-                    props.setDataAuth(result);
+                    localStorage.setItem("accessToken",result.accessToken);
+                    localStorage.setItem("refreshToken",result.refreshToken);
+                    props.setDataAuth(result.dataUser);
                 } else props.alertCallback(result);
             })
     }

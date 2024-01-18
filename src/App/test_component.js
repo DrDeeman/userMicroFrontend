@@ -9,7 +9,8 @@ export default function Users(props){
 
 
   useEffect(()=>{
-    console.log('test');
+    
+ 
      fetch('/users_api/auth')
      .then(async r=>{
          if(r.ok){
