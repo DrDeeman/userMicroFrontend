@@ -4,11 +4,13 @@ import 'reactjs-popup/dist/index.css';
 
 import {CreateAccount} from './ActionAccount/createAccount';
 import {SignInAccount} from './ActionAccount/signInAccount';
+import {EditAccount} from './ActionAccount/editAccount';
 import {LogoutAccount} from './ActionAccount/logoutAccount';
 
 export default function({auth, setDataAuth}){
 
     const [createAccount, setCreateAccount] = useState(false);
+    const [editAccount, setEditAccount] = useState(false);
     const [signInAccount, setSignInAccount] = useState(false);
 
     function logoutAccount(){
@@ -39,9 +41,17 @@ export default function({auth, setDataAuth}){
             :null}
 
             {auth?
+            <React.Fragment>
+                <div>
+                 <button onClick={()=>setEditAccount(true)}>Редактировать профиль</button>
+                 <Popup  open={editAccount} onClose={()=>setEditAccount(false)} modal nested>
+                    <EditAccount closePopup={()=>setEditAccount(false)} dataAuth={auth} setDataAuth={setDataAuth}/>
+                </Popup>
+                </div>
             <div>
                  <button onClick={()=>logoutAccount()}>Выйти</button>
             </div>
+            </React.Fragment>
             :null}
 
         </div>

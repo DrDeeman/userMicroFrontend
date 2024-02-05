@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import user from '../assets/images/user.png';
 import DialogHome from './dialogHome';
+import './style/dialog.scss';
 
 export default function Users(props){
      
@@ -17,7 +18,9 @@ export default function Users(props){
             var user = await r.json();
             setAuth(user);
          }
-     })
+     });
+
+     
 },[]);
 
     return <div 
@@ -26,6 +29,8 @@ export default function Users(props){
     style={{backgroundImage:`url(${user})`}}
     title={(auth?`login=${auth.login}  password=${auth.password}`:null)}
     >
-    {openDialog?<DialogHome auth={auth} setDataAuth={setAuth}/>:null} 
+    {
+    openDialog?<DialogHome auth={auth} setDataAuth={setAuth}/>:null
+    } 
     </div>
 }

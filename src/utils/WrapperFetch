@@ -12,12 +12,12 @@ function WrapperFetch(){
 
     if(setToken && accessToken){
         newConfig.headers = {
-            ...resource.headers,
+            ...oldConfig.headers,
             Authorization:"Bearer "+accessToken
         };
     }
 
-
+         console.log(newConfig);
         var response = await originalFetch(resource,newConfig);
         var tresponse = response.clone();
     

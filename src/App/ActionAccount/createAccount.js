@@ -14,9 +14,9 @@ export const CreateAccount = AlertHOC(function (props){
     const passwordRef = useRef();
     const emailRef = useRef();
     
-    function handleSubmit(e){
+    function handleSubmit(ev){
 
-     e.preventDefault();
+     ev.preventDefault();
       
      fetch('/users_api/users/',{
         method:"POST",

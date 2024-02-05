@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const config = require('./webpack.config.js');
 const webpack = require('webpack');
 require('dotenv').config();
+const deps = require("./package.json").dependencies;
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
 module.exports = merge(config, {
@@ -13,8 +14,13 @@ module.exports = merge(config, {
     historyApiFallback: true,
     proxy: {
       '/users_api/*': {
-        target: 'http://[::1]:8091/',
-        pathRewrite: { '^/users_api': '' },
+        target: 'http://[::1]:8200/',
+        //pathRewrite: { '^/users_api': '' },
+        changeOrigin: true,
+      },
+      '/products_api/*': {
+        target: 'http://[::1]:8061/',
+       // pathRewrite: { '^/products_api': '' },
         changeOrigin: true,
       },
     },
@@ -28,8 +34,13 @@ module.exports = merge(config, {
       },
       remotes: {
         'app1': remoteConfig('product_users','"http://localhost:3002/remoteProduct.js"')
+      },
+      shared:{
+        'react':{singleton: true, strictVersion: false, eager: true, requiredVersion:'^18.0.0'},
+        'react-dom':{singleton: true, strictVersion: false, eager: true,requiredVersion:'^18.0.0'},
       }
-    })
+    }),
+    
   ],
 });
 
