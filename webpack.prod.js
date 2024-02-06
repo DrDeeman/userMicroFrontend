@@ -22,7 +22,7 @@ module.exports = merge(config, {
         './Users': './src/App/test_component.js',
       },
       remotes: {
-       'app1': 'products@http://127.0.0.1:8061/products_api/remoteProduct.js'
+       'app1': 'product_users@http://127.0.0.1:8061/products_api/remoteProduct.js'
       //'app1':'products'
       },
       shared:{

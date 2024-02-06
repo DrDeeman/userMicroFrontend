@@ -13,13 +13,13 @@ module.exports = merge(config, {
       'process.env.I18N_DEBUG': JSON.stringify(false),
     }),
     new ModuleFederationPlugin({
-      name: 'product_users',
+      name: 'users',
       filename: 'remoteUsers.js',
       exposes: {
         './Users': './src/App/test_component.js',
       },
       remotes: {
-       'app1': 'products@http://127.0.0.1:8050/products_api/remoteProduct.js'
+       'app1': 'product_users@http://127.0.0.1:8050/products_api/remoteProduct.js'
       },
       shared:{
         'react':{singleton: true, strictVersion: false, eager: true, requiredVersion:'^18.0.0'},
